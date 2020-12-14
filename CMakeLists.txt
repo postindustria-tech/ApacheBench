@@ -138,3 +138,11 @@ IF(MSVC)
 ELSE(MSVC)
 	target_link_libraries(ab m c)
 ENDIF(MSVC)
+
+add_custom_target(perf ALL
+    COMMAND cp ../runPerf.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+	#COMMAND cp ../runPerf.bat ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+    DEPENDS ../runPerf.sh #../runPerf.bat
+    VERBATIM
+)
+add_dependencies(perf ab)
