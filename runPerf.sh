@@ -84,6 +84,7 @@ $AB -A uas.csv -q -n $PASSES $HOST/$PRO_END >$PRO_OUT
 
 # Stop the service
 kill $SERVICE_PID
+wait $SERVICE_PID 2>&1
 
 # Check no requests failed in calibration
 FAILED_CAL=`cat $CAL_OUT | grep "Failed requests" | sed -En "s/Failed requests: *([0-9]*)/\1/p"`
