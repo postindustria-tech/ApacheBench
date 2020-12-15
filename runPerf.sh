@@ -4,7 +4,7 @@
 CAL_OUT=calibrate.out
 PRO_OUT=process.out
 AB=`dirname $0`/ab
-ALLOWED_OVERHEAD_MS=100
+ALLOWED_OVERHEAD_MS=200
 
 while [[ $# -gt 0 ]]
 do
