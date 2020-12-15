@@ -52,6 +52,9 @@ then
 	echo "    -s | --service-start          : command to start the web service e.g. \"php -S localhost:3000\""
     echo "    -c | --calibration-endpoint   : endpoint path to use for calibration on the host e.g. test/calibrate"
     echo "    -p | --process-endpoint       : endpoint path to use for the process pass on the host e.g. test/process"
+	echo ""
+	echo "For example:"
+	echo "    runPerf.bat -host localhost:3000 -passes 1000 -service-start \"php -S localhost:3000\" ..."
     exit 0
 fi
 

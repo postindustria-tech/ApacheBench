@@ -128,10 +128,10 @@ target_link_libraries(ab ${APR_LIBRARY} ${APRUTIL_LIBRARY})
 IF(MSVC)
 	# Copy the DLLs from the downloaded Apache
 	add_custom_target(CopyDlls
-		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/
-		COMMAND ${CMAKE_COMMAND} -E copy ${APACHE_DIR}/bin/libapr-1.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/
-		COMMAND ${CMAKE_COMMAND} -E copy ${APACHE_DIR}/bin/libaprutil-1.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/
-		COMMAND ${CMAKE_COMMAND} -E copy ${APACHE_DIR}/bin/libapriconv-1.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug/
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+		COMMAND ${CMAKE_COMMAND} -E copy ${APACHE_DIR}/bin/libapr-1.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+		COMMAND ${CMAKE_COMMAND} -E copy ${APACHE_DIR}/bin/libaprutil-1.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+		COMMAND ${CMAKE_COMMAND} -E copy ${APACHE_DIR}/bin/libapriconv-1.dll ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
 		COMMENT "Copying APR DLLs" VERBATIM
 	)
 	add_dependencies(ab CopyDlls)
@@ -140,9 +140,9 @@ ELSE(MSVC)
 ENDIF(MSVC)
 
 add_custom_target(perf ALL
-    COMMAND cp ../runPerf.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-	#COMMAND cp ../runPerf.bat ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-    DEPENDS ../runPerf.sh #../runPerf.bat
+    COMMAND ${CMAKE_COMMAND} -E copy ../runPerf.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+	COMMAND ${CMAKE_COMMAND} -E copy ../runPerf.bat ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+    DEPENDS ../runPerf.sh ../runPerf.bat
     VERBATIM
 )
 add_dependencies(perf ab)
