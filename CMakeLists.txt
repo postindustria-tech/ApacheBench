@@ -141,8 +141,8 @@ ENDIF(MSVC)
 
 add_custom_target(perf ALL
     COMMAND ${CMAKE_COMMAND} -E copy ../runPerf.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-	COMMAND ${CMAKE_COMMAND} -E copy ../runPerf.bat ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-    DEPENDS ../runPerf.sh ../runPerf.bat
+	COMMAND ${CMAKE_COMMAND} -E copy ../runPerf.ps1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+    DEPENDS ../runPerf.sh ../runPerf.ps1
     VERBATIM
 )
 add_dependencies(perf ab)

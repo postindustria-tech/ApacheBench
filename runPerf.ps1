@@ -4,7 +4,7 @@
 $calOut = "calibrate.out"
 $proOut = "process.out"
 $scriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
-$ab="$ScriptRoot/build/bin/ab"
+$ab="$ScriptRoot/ab"
 $allowedOverheadMs=100
 
 if ($h -eq $null -or
