@@ -74,7 +74,17 @@ ${SERVICE_START} 2>service.error.out 1>service.out &
 SERVICE_PID=$!
 
 # Wait for the service to start up
-sleep 3
+echo "Waiting up to 15 seconds for $HOST/$CAL_END"
+if ! command -v curl &> /dev/null
+then
+  sleep 15
+else
+  tries=0
+  while [[ "$(curl -o /dev/null -s -w '%{http_code}' $HOST/$CAL_END)" -ne 200 ]] && [[ $tries -le 3 ]]; do  
+    let "tries++"
+    sleep 5
+  done
+fi
 
 # Run the benchmarks
 echo "Running calibration"
