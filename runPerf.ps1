@@ -34,7 +34,7 @@ Write-Host "Process Endpoint         = $p"
 
 Write-Host "Starting the service"
 
-Invoke-Expression "cmd /c start powershell -Command { `$host.UI.RawUI.WindowTitle = `"Listening Web Service`"; $s; }"
+Invoke-Expression "cmd /c start powershell -Command { `$host.UI.RawUI.WindowTitle = `"Listening Web Service`"; $s 2> $scriptRoot\service.error.out 1> $scriptRoot\service.out; }"
 
 # Function to get status code from service endpoint
 Function Get-StatusCode {
@@ -48,7 +48,7 @@ Function Get-StatusCode {
 }
 
 # Wait for the service to start
-Write-Host "Waitig up to 15 seconds for host $h"
+Write-Host "Waiting up to 15 seconds for host $h"
 $Tries = 0
 $HTTP_Status = Get-StatusCode
 While ($HTTP_Status -ne 200 -And $Tries -le 3) {
