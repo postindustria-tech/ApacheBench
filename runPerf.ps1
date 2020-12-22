@@ -48,10 +48,10 @@ Function Get-StatusCode {
 }
 
 # Wait for the service to start
-Write-Host "Waiting up to 15 seconds for host $h"
+Write-Host "Waiting up to 60 seconds for host $h"
 $Tries = 0
 $HTTP_Status = Get-StatusCode
-While ($HTTP_Status -ne 200 -And $Tries -le 3) {
+While ($HTTP_Status -ne 200 -And $Tries -le 12) {
     Start-Sleep -Seconds 5
     $Tries = $Tries +1
     $HTTP_Status = Get-StatusCode
