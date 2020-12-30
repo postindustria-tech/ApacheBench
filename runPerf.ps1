@@ -34,7 +34,7 @@ Write-Host "Process Endpoint         = $p"
 
 Write-Host "Starting the service"
 
-Invoke-Expression "cmd /c start powershell -Command { `$host.UI.RawUI.WindowTitle = `"Listening Web Service`"; $s; }"
+Invoke-Expression "cmd /c start powershell -Command { `$host.UI.RawUI.WindowTitle = `"Listening Web Service`"; $s 2> $scriptRoot\service.error.out 1> $scriptRoot\service.out; }"
 
 # Wait for the service to start
 Sleep 3
