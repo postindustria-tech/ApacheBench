@@ -64,7 +64,8 @@ Write-Host "Running processing"
 Invoke-Expression "$ab -A uas.csv -q -n $n $h/$p >$proOut"
 
 # Stop the service
-get-process | where-object {$_.MainWindowTitle -eq "Listening Web Service"} | stop-process
+$serviceProcess = get-process | where-object {$_.MainWindowTitle -eq "Listening Web Service"}
+stop-process $serviceProcess.Id
 
 # Check no requests failed in calibration
 $failedCal = Get-Content $calOut | Select-String -Pattern "Failed requests"
