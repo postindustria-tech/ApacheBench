@@ -36,9 +36,26 @@ Write-Host "Starting the service"
 
 Invoke-Expression "cmd /c start powershell -Command { `$host.UI.RawUI.WindowTitle = `"Listening Web Service`"; $s 2> $scriptRoot\service.error.out 1> $scriptRoot\service.out; }"
 
-# Wait for the service to start
-Sleep 3
+# Function to get status code from service endpoint
+Function Get-StatusCode {
+    try{
+        (Invoke-WebRequest -Uri "http://$h/$c" -UseBasicParsing -DisableKeepAlive).StatusCode
+    }
+    catch [Net.WebException]
+    {
+        [int]$_.Exception.Response.StatusCode
+    }
+}
 
+# Wait for the service to start
+Write-Host "Waiting up to 60 seconds for host $h"
+$Tries = 0
+$HTTP_Status = Get-StatusCode
+While ($HTTP_Status -ne 200 -And $Tries -le 12) {
+    Start-Sleep -Seconds 5
+    $Tries = $Tries +1
+    $HTTP_Status = Get-StatusCode
+}
 
 # Run the benchmarks
 Write-Host "Running calibration"
