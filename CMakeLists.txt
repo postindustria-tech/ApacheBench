@@ -24,14 +24,14 @@ IF (MSVC)
 	IF(MSVC_TOOLSET_VERSION STREQUAL 142)
 		SET(APACHE_DL_VS VS16)
 	ELSEIF(MSVC_TOOLSET_VERSION STREQUAL 141)
-		SET(APACHE_DL_VS VS15)
+		SET(APACHE_DL_VS VC15)
 	ELSE()
 		MESSAGE(FATAL_ERROR "Visual Studio was not version 2017 or 2019")
 	ENDIF()
 	
 	# Download the appropriate apache source code
 	download_file(
-		https://www.apachelounge.com/download/${APACHE_DL_VS}/binaries/httpd-2.4.46-win${APACHE_DL_PLAT}-${APACHE_DL_VS}.zip
+		https://www.apachelounge.com/download/${APACHE_DL_VS}/binaries/httpd-2.4.48-win${APACHE_DL_PLAT}-${APACHE_DL_VS}.zip
 		${CMAKE_CURRENT_BINARY_DIR}/apr.zip
 	)
 	SET(APACHE_DIR ${CMAKE_CURRENT_BINARY_DIR}/Apache24)
