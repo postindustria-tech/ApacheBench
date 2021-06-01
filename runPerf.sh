@@ -4,6 +4,7 @@
 CAL_OUT=calibrate.out
 PRO_OUT=process.out
 AB=`dirname $0`/ab
+UAS=`dirname $0`/uas.csv
 ALLOWED_OVERHEAD_MS=200
 
 while [[ $# -gt 0 ]]
@@ -88,9 +89,9 @@ fi
 
 # Run the benchmarks
 echo "Running calibration"
-$AB -A uas.csv -q -n $PASSES $HOST/$CAL_END >$CAL_OUT
+$AB -U $UAS -q -n $PASSES $HOST/$CAL_END >$CAL_OUT
 echo "Running processing"
-$AB -A uas.csv -q -n $PASSES $HOST/$PRO_END >$PRO_OUT
+$AB -U $UAS -q -n $PASSES $HOST/$PRO_END >$PRO_OUT
 
 # Stop the service
 kill $SERVICE_PID

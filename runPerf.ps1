@@ -1,9 +1,15 @@
-﻿param ($h, $s, $c, $p, $n)
+﻿param ($h, $s, $c, $p, $n, $conf)
 
-
-$calOut = "calibrate.out"
-$proOut = "process.out"
 $scriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
+
+$calOut = "$scriptRoot/calibrate.out"
+$proOut = "$scriptRoot/process.out"
+
+if($conf -ne $null){
+    $calOut = "$scriptRoot/calibrate-$conf.out"
+    $proOut = "$scriptRoot/process-$conf.out"
+}
+
 $ab="$ScriptRoot/ab"
 $allowedOverheadMs=200
 
@@ -34,7 +40,7 @@ Write-Host "Process Endpoint         = $p"
 
 Write-Host "Starting the service"
 
-Invoke-Expression "cmd /c start powershell -Command { `$host.UI.RawUI.WindowTitle = `"Listening Web Service`"; $s 2> $scriptRoot\service.error.out 1> $scriptRoot\service.out; }"
+$serviceProcess = Start-Process powershell -argument "$s" -RedirectStandardError "$scriptRoot/service-$conf.error.out" -RedirectStandardOutput "$scriptRoot/service-$conf.out" –PassThru -NoNewWindow
 
 # Function to get status code from service endpoint
 Function Get-StatusCode {
@@ -59,13 +65,9 @@ While ($HTTP_Status -ne 200 -And $Tries -le 12) {
 
 # Run the benchmarks
 Write-Host "Running calibration"
-Invoke-Expression "$ab -A uas.csv -q -n $n $h/$c >$calOut"
+Invoke-Expression "$ab -U $ScriptRoot/uas.csv -q -n $n $h/$c >$calOut"
 Write-Host "Running processing"
-Invoke-Expression "$ab -A uas.csv -q -n $n $h/$p >$proOut"
-
-# Stop the service
-$serviceProcess = get-process | where-object {$_.MainWindowTitle -eq "Listening Web Service"}
-stop-process $serviceProcess.Id
+Invoke-Expression "$ab -U $ScriptRoot/uas.csv -q -n $n $h/$p >$proOut"
 
 # Check no requests failed in calibration
 $failedCal = Get-Content $calOut | Select-String -Pattern "Failed requests"
@@ -98,14 +100,14 @@ if ($non200Pro -ne 0) {
 # Get the time for calibration
 $calTime = Get-Content $calOut | Select-String -Pattern "Time taken for tests"
 $calTime = $calTime -replace 'Time taken for tests: *([0-9]*\.[0-9]*) seconds','$1'
-$calTime = $calTime / $n
-Write-Host "Calibration time: $calTime s ($calTime s per request)"
+$calTimePR = $calTime / $n
+Write-Host "Calibration time: $calTime s ($calTimePR s per request)"
 
 # Get the time for processing
 $proTime = Get-Content $proOut | Select-String -Pattern "Time taken for tests"
 $proTime = $proTime -replace 'Time taken for tests: *([0-9]*\.[0-9]*) seconds','$1'
-$proTime = $proTime / $n
-Write-Host "Processing time: $proTime s ($proTime s per request)"
+$proTimePR = $proTime / $n
+Write-Host "Processing time: $proTime s ($proTimePR s per request)"
 
 # Calculate the processing overhead
 $diff = $proTime -  $calTime
@@ -116,3 +118,12 @@ Write-Host "Processing overhead is $overheadMs ms per request"
 if ($overheadMs -gt $allowedOverheadMs) {
     Write-Warning "Overhead was over $allowedOverheadMs"
 }
+
+# Stop the service
+function Kill-Tree {
+    Param([int]$ppid)
+    Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $ppid } | ForEach-Object { Kill-Tree $_.ProcessId }
+    Stop-Process -Id $ppid
+}
+
+Kill-Tree $serviceProcess.Id

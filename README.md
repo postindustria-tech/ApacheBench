@@ -27,7 +27,7 @@ sudo apt-get install cmake gcc make
 
 ### Windows
 
-For Windows, the appropriate libraries and sources are downloaded automatically at build time  from [ApacheLounge](https://www.apachelounge.com/download/).
+For Windows, cmake can be obtained from: [CMake.org](https://cmake.org/download/). The appropriate libraries and sources are downloaded automatically at build time  from [ApacheLounge](https://www.apachelounge.com/download/).
 
 ## Installation
 

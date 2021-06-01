@@ -12,6 +12,11 @@ endif()
 
 endfunction(download_file)
 
+download_file(
+    https://media.githubusercontent.com/media/51Degrees/device-detection-data/master/20000%20User%20Agents.csv
+    ${CMAKE_SOURCE_DIR}/uas.csv
+)
+
 IF (MSVC)
 	# Get the platform
 	IF(CMAKE_VS_PLATFORM_NAME STREQUAL x64)
@@ -142,7 +147,8 @@ ENDIF(MSVC)
 add_custom_target(perf ALL
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/runPerf.sh ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
 	COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/runPerf.ps1 ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
-    DEPENDS ${CMAKE_SOURCE_DIR}/runPerf.sh ${CMAKE_SOURCE_DIR}/runPerf.ps1
+	COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/uas.csv ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/
+    DEPENDS ${CMAKE_SOURCE_DIR}/runPerf.sh ${CMAKE_SOURCE_DIR}/runPerf.ps1 ${CMAKE_SOURCE_DIR}/uas.csv
     VERBATIM
 )
 add_dependencies(perf ab)
