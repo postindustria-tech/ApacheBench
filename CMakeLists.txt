@@ -36,7 +36,7 @@ IF (MSVC)
 	
 	# Download the appropriate apache source code
 	download_file(
-		https://www.apachelounge.com/download/${APACHE_DL_VS}/binaries/httpd-2.4.49-win${APACHE_DL_PLAT}-${APACHE_DL_VS}.zip
+		https://www.apachelounge.com/download/${APACHE_DL_VS}/binaries/httpd-2.4.50-win${APACHE_DL_PLAT}-${APACHE_DL_VS}.zip
 		${CMAKE_CURRENT_BINARY_DIR}/apr.zip
 	)
 	SET(APACHE_DIR ${CMAKE_CURRENT_BINARY_DIR}/Apache24)
