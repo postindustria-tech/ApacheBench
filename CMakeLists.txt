@@ -35,8 +35,13 @@ IF (MSVC)
 	ENDIF()
 	
 	# Download the appropriate apache source code
+	execute_process(
+		COMMAND powershell -ExecutionPolicy Bypass -File ${CMAKE_SOURCE_DIR}/GetVer.ps1
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+		OUTPUT_VARIABLE APACHE_REV)
+	message("-- Using version 2.4.${APACHE_REV} of Apache binaries.")
 	download_file(
-		https://www.apachelounge.com/download/${APACHE_DL_VS}/binaries/httpd-2.4.50-win${APACHE_DL_PLAT}-${APACHE_DL_VS}.zip
+		https://www.apachelounge.com/download/${APACHE_DL_VS}/binaries/httpd-2.4.${APACHE_REV}-win${APACHE_DL_PLAT}-${APACHE_DL_VS}.zip
 		${CMAKE_CURRENT_BINARY_DIR}/apr.zip
 	)
 	SET(APACHE_DIR ${CMAKE_CURRENT_BINARY_DIR}/Apache24)
