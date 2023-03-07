@@ -30,8 +30,10 @@ IF (MSVC)
 		SET(APACHE_DL_VS VS16)
 	ELSEIF(MSVC_TOOLSET_VERSION STREQUAL 141)
 		SET(APACHE_DL_VS VC15)
+	ELSEIF(MSVC_TOOLSET_VERSION STREQUAL 143)
+		SET(APACHE_DL_VS VS17)
 	ELSE()
-		MESSAGE(FATAL_ERROR "Visual Studio was not version 2017 or 2019")
+		MESSAGE(FATAL_ERROR "Visual Studio was not version 2017, 2019 or 2022")
 	ENDIF()
 	
 	# Download the appropriate apache source code
