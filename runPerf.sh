@@ -3,6 +3,7 @@
 # Constants
 CAL_OUT=calibrate.out
 PRO_OUT=process.out
+SUMMARY_OUT=summary.json
 AB=`dirname $0`/ab
 UAS=`dirname $0`/uas.csv
 ALLOWED_OVERHEAD_MS=200
@@ -149,3 +150,14 @@ if [ $LT -eq 0 ]
   then
     echo "Overhead was over $ALLOWED_OVERHEAD_MS" 1>&2
 fi
+
+# Write a summary to file
+echo "{
+  'overhead_ms': $OVERHEAD_MS,
+  'non_200_responses_process': $NON200_PRO_COUNT,
+  'failed_process': $FAILED_PRO,
+  'non_200_responses_calibrate': $NON200_CAL_COUNT,
+  'failed_calibrate': $FAILED_CAL,
+  'request_s_process': $PRO_TIME_PR,
+  'request_s_calibrate': $CAL_TIME_PR
+}" >$SUMMARY_OUT
