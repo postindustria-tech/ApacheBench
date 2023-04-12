@@ -4,10 +4,12 @@ $scriptRoot = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
 
 $calOut = "$scriptRoot/calibrate.out"
 $proOut = "$scriptRoot/process.out"
+$summaryOut = "$scriptRoot/summary.json"
 
 if($conf -ne $null){
     $calOut = "$scriptRoot/calibrate-$conf.out"
     $proOut = "$scriptRoot/process-$conf.out"
+    $summaryOut = "$scriptRoot/summary-$conf.json"
 }
 
 $ab="$ScriptRoot/ab"
@@ -127,3 +129,15 @@ function Kill-Tree {
 }
 
 Kill-Tree $serviceProcess.Id
+
+# Write a summary file
+Write-Output "{
+    'overhead_ms': $overheadMs,
+    'non_200_responses_process': $non200Pro,
+    'failed_process': $failedPro,
+    'non_200_responses_calibrate': $non200Cal,
+    'failed_calibrate': $failedCal,
+    'request_s_process': $proTimePR,
+    'request_s_calibrate': $calTimePR
+  }" >$summaryOut
+  
