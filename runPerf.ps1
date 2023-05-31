@@ -49,9 +49,9 @@ Function Get-StatusCode {
     try{
         (Invoke-WebRequest -Uri "http://$h/$c" -UseBasicParsing -DisableKeepAlive).StatusCode
     }
-    catch [Net.WebException]
+    catch
     {
-        [int]$_.Exception.Response.StatusCode
+        0
     }
 }
 
