@@ -42,7 +42,7 @@ Write-Host "Process Endpoint         = $p"
 
 Write-Host "Starting the service"
 
-$serviceProcess = Start-Process powershell -argument "$s" -RedirectStandardError "$scriptRoot/service-$conf.error.out" -RedirectStandardOutput "$scriptRoot/service-$conf.out" –PassThru -NoNewWindow
+$serviceProcess = Start-Process pwsh -argument "$s" -RedirectStandardError "$scriptRoot/service-$conf.error.out" -RedirectStandardOutput "$scriptRoot/service-$conf.out" –PassThru -NoNewWindow
 
 # Function to get status code from service endpoint
 Function Get-StatusCode {
