@@ -123,7 +123,9 @@ if ($overheadMs -gt $allowedOverheadMs) {
 # Stop the service
 function Kill-Tree {
     Param([int]$ppid)
-    Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $ppid } | ForEach-Object { Kill-Tree $_.ProcessId }
+    if ($IsWindows) {
+        Get-CimInstance Win32_Process | Where-Object { $_.ParentProcessId -eq $ppid } | ForEach-Object { Kill-Tree $_.ProcessId }
+    }
     Stop-Process -Id $ppid
 }
 
