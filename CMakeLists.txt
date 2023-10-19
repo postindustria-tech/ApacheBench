@@ -7,7 +7,21 @@ function(download_file url filename)
 if(NOT EXISTS ${filename})
     file(DOWNLOAD ${url} ${filename}
 	    HTTPHEADER "User-Agent: CMake"
-        TLS_VERIFY ON)
+        TLS_VERIFY ON
+		SHOW_PROGRESS
+		STATUS DOWNLOAD_STATUS)
+
+	## ATTR: https://stackoverflow.com/a/61256073
+	# Separate the returned status code, and error message.
+	list(GET DOWNLOAD_STATUS 0 STATUS_CODE)
+	list(GET DOWNLOAD_STATUS 1 ERROR_MESSAGE)
+	# Check if download was successful.
+	if(${STATUS_CODE} EQUAL 0)
+	    message(STATUS "Download completed successfully!")
+	else()
+	    # Exit CMake if the download failed, printing the error message.
+	    message(FATAL_ERROR "Error occurred during download: ${ERROR_MESSAGE}")
+endif()
 endif()
 
 endfunction(download_file)
