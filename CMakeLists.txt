@@ -42,8 +42,10 @@ IF (MSVC)
 		OUTPUT_STRIP_TRAILING_WHITESPACE
 		OUTPUT_VARIABLE APACHE_REV)
 	message("-- Using version 2.4.${APACHE_REV} of Apache binaries.")
+	set(ARP_DL_LINK "https://www.apachelounge.com/download/${APACHE_DL_VS}/binaries/httpd-2.4.${APACHE_REV}-win${APACHE_DL_PLAT}-${APACHE_DL_VS}.zip")
+	message("-- Apache binaries download link: ${ARP_DL_LINK}")
 	download_file(
-		https://www.apachelounge.com/download/${APACHE_DL_VS}/binaries/httpd-2.4.${APACHE_REV}-win${APACHE_DL_PLAT}-${APACHE_DL_VS}.zip
+		${ARP_DL_LINK}
 		${CMAKE_CURRENT_BINARY_DIR}/apr.zip
 	)
 	SET(APACHE_DIR ${CMAKE_CURRENT_BINARY_DIR}/Apache24)
