@@ -9,7 +9,7 @@ if(NOT EXISTS ${filename})
 
     file(DOWNLOAD ${url} ${filename}
 	    HTTPHEADER "User-Agent: CMake"
-        TLS_VERIFY ON
+        TLS_VERIFY OFF
 		SHOW_PROGRESS
 		STATUS DOWNLOAD_STATUS)
 
