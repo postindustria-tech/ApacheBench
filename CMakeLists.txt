@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(AB LANGUAGES C)
 
-function(download_file url filename)
+function(download_file url filename error_status)
 
 if(NOT EXISTS ${filename})
 	message(STATUS "-- Downloading: ${url}")
@@ -22,7 +22,7 @@ if(NOT EXISTS ${filename})
 	    message(STATUS "-- Download completed successfully!")
 	else()
 	    # Exit CMake if the download failed, printing the error message.
-	    message(FATAL_ERROR "-- Error occurred during download: ${ERROR_MESSAGE}")
+	    message(${error_status "-- Error occurred during download: ${ERROR_MESSAGE}")
 	endif()
 endif()
 
@@ -31,6 +31,7 @@ endfunction(download_file)
 download_file(
     https://media.githubusercontent.com/media/51Degrees/device-detection-data/main/20000%20User%20Agents.csv
     ${CMAKE_SOURCE_DIR}/uas.csv
+	STATUS
 )
 
 IF (MSVC)
@@ -63,6 +64,7 @@ IF (MSVC)
 	download_file(
 		${ARP_DL_LINK}
 		${CMAKE_CURRENT_BINARY_DIR}/apr.zip
+		FATAL_ERROR
 	)
 	SET(APACHE_DIR ${CMAKE_CURRENT_BINARY_DIR}/Apache24)
 	FILE(ARCHIVE_EXTRACT INPUT ${CMAKE_CURRENT_BINARY_DIR}/apr.zip)
