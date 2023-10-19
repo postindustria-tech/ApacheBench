@@ -5,6 +5,8 @@ project(AB LANGUAGES C)
 function(download_file url filename)
 
 if(NOT EXISTS ${filename})
+	message(STATUS "-- Downloading: ${url}")
+
     file(DOWNLOAD ${url} ${filename}
 	    HTTPHEADER "User-Agent: CMake"
         TLS_VERIFY ON
@@ -17,11 +19,11 @@ if(NOT EXISTS ${filename})
 	list(GET DOWNLOAD_STATUS 1 ERROR_MESSAGE)
 	# Check if download was successful.
 	if(${STATUS_CODE} EQUAL 0)
-	    message(STATUS "Download completed successfully!")
+	    message(STATUS "-- Download completed successfully!")
 	else()
 	    # Exit CMake if the download failed, printing the error message.
-	    message(FATAL_ERROR "Error occurred during download: ${ERROR_MESSAGE}")
-endif()
+	    message(FATAL_ERROR "-- Error occurred during download: ${ERROR_MESSAGE}")
+	endif()
 endif()
 
 endfunction(download_file)
