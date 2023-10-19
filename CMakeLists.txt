@@ -50,6 +50,10 @@ IF (MSVC)
 	)
 	SET(APACHE_DIR ${CMAKE_CURRENT_BINARY_DIR}/Apache24)
 	FILE(ARCHIVE_EXTRACT INPUT ${CMAKE_CURRENT_BINARY_DIR}/apr.zip)
+
+	execute_process(
+		COMMAND powershell Get-ChildItem -Recurse ${APACHE_DIR}/lib
+		)
 	
 	SET(APR_INCLUDE_DIR ${APACHE_DIR}/include)
 	SET(APR_LIBRARY ${APACHE_DIR}/lib/libapr-1.lib)
