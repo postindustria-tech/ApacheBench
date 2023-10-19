@@ -22,7 +22,7 @@ if(NOT EXISTS ${filename})
 	    message(STATUS "-- Download completed successfully!")
 	else()
 	    # Exit CMake if the download failed, printing the error message.
-	    message(${error_status "-- Error occurred during download: ${ERROR_MESSAGE}")
+	    message(${error_status} "-- Error occurred during download: ${ERROR_MESSAGE}")
 	endif()
 endif()
 
